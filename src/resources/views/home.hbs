@@ -1,0 +1,77 @@
+  <div class="container mx-auto py-8 grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <div class="bg-white p-6 rounded-lg shadow-md">
+      <h2 class="text-xl font-bold mb-4">Thông Tin Cá Nhân</h2>
+      <div class="flex items-center mb-4">
+        <img src="/images/1.avif" alt="Avatar" class="rounded-full w-20 h-20">
+      <div class="ml-4 mt-4">
+        <h3 class="text-lg font-semibold mb-2"><i class="fa-solid fa-user pr-4"></i> Phạm Văn Miền</h3>
+        <p class="mb-2"><i class="fas fa-home pr-4"></i> Thanh Hải - Thanh Hà - Hải Dương</p>
+        <p class="mb-2"><i class="fa-duotone fa-solid fa-heart pr-4"></i> Độc Thân</p>
+
+      </div>
+      </div>
+      <h3 class="text-lg font-bold mb-2">Danh Sách Bạn Bè</h3>
+      <ul>
+        <li class="flex items-center mb-2">
+          <img src="/images/1.avif" alt="Avatar" class="rounded-full w-10 h-10">
+          <a href="/profile"><p class="ml-3">Phạm Văn Miền</p></a>
+        </li>
+      </ul>
+    </div>
+    <div class="col-span-1 lg:col-span-2">
+      <div class="bg-white p-6 rounded-lg shadow-md mb-6">
+        <h2 class="text-xl font-bold mb-4">Đăng Bài</h2>
+        <form action="#" method="POST">
+          <textarea class="w-full border rounded-lg p-4 focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4" placeholder="Bạn đang nghĩ gì?" rows="3"></textarea>
+          <div class="flex items-center justify-between">
+            <input type="file" class="border p-2 rounded-lg" name="image">
+            <button class="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600">Đăng</button>
+          </div>
+        </form>
+      </div>
+<div class="space-y-6">
+  {{#each posts}}
+    <div class="bg-white p-6 rounded-lg shadow-md">
+      <div class="flex items-center mb-4">
+        <img src="/images/z5885112990693_00536d34ab1b1e3d6afd850f66a5f70e.jpg" alt="Avatar" class=" rounded-full w-12 h-12">
+        <div class="ml-3">
+          <h3 class="font-bold">Phạm Văn Miền</h3>
+          <p class="text-sm text-gray-500">10 phút trước</p>
+        </div>
+      </div>
+
+      <p class="mb-4">{{this.content}}</p>
+       {{#if this.image_url}}
+        <img src="{{this.image_url}}" alt="Post Image" class="mt-4 w-[700px] bg-gray-300 h-54 rounded-lg">
+      {{else}}
+        <p class="text-gray-500">Không có ảnh.</p>
+      {{/if}}
+     <div class="mt-4 flex space-x-4">
+            <button class="flex items-center space-x-2 text-gray-600">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z" />
+              </svg>
+              <span>Like</span>
+            </button>
+            <button class="flex items-center space-x-2 text-gray-600">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.123A7.962 7.962 0 012 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9H5v2h2V9zm8 0h-2v2h2V9z" clip-rule="evenodd" />
+              </svg>
+              <span>Bình luận</span>
+            </button>
+            <button class="flex items-center space-x-2 text-gray-600">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M15 8a3 3 0 10-2.977-2.63l-4.94 2.47a3 3 0 100 4.319l4.94 2.47a3 3 0 10.895-1.789l-4.94-2.47a3.027 3.027 0 000-.74l4.94-2.47C13.456 7.68 14.19 8 15 8z" />
+              </svg>
+              <span>Chia sẻ</span>
+            </button>
+          </div>
+        </div>
+    </div>
+  {{else}}
+    <p>Không có bài viết nào.</p>
+  {{/each}}
+</div>
+    </div>
+  </div>
+  </div>
