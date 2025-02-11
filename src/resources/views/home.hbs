@@ -2,13 +2,19 @@
     <div class="bg-white p-6 rounded-lg shadow-md">
       <h2 class="text-xl font-bold mb-4">Thông Tin Cá Nhân</h2>
       <div class="flex items-center mb-4">
-        <img src="/images/1.avif" alt="Avatar" class="rounded-full w-20 h-20">
+       <img src="{{#if user.Avatar}}{{user.Avatar}}{{else}}/images/default-avatar.png{{/if}}" 
+     alt="Avatar" class="rounded-full w-20 h-20">
       <div class="ml-4 mt-4">
-        <h3 class="text-lg font-semibold mb-2"><i class="fa-solid fa-user pr-4"></i> Phạm Văn Miền</h3>
-        <p class="mb-2"><i class="fas fa-home pr-4"></i> Thanh Hải - Thanh Hà - Hải Dương</p>
-        <p class="mb-2"><i class="fa-duotone fa-solid fa-heart pr-4"></i> Độc Thân</p>
-
-      </div>
+    <h3 class="text-lg font-semibold mb-2">
+        <i class="fa-solid fa-user pr-4"></i> {{#if user}} {{user.FirstName}} {{user.LastName}} {{else}} Khách {{/if}}
+    </h3>
+    <p class="mb-2">
+        <i class="fas fa-home pr-4"></i> {{#if user}} {{user.Location}} {{else}} Chưa cập nhật {{/if}}
+    </p>
+    <p class="mb-2">
+        <i class="fa-solid fa-heart pr-4"></i> {{#if user}} {{user.Bio}} {{else}} Không có thông tin {{/if}}
+    </p>
+</div>
       </div>
       <h3 class="text-lg font-bold mb-2">Danh Sách Bạn Bè</h3>
       <ul>
@@ -21,7 +27,7 @@
     <div class="col-span-1 lg:col-span-2">
       <div class="bg-white p-6 rounded-lg shadow-md mb-6">
         <h2 class="text-xl font-bold mb-4">Đăng Bài</h2>
-        <form action="#" method="POST">
+        <form action="# " method="POST">
           <textarea class="w-full border rounded-lg p-4 focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4" placeholder="Bạn đang nghĩ gì?" rows="3"></textarea>
           <div class="flex items-center justify-between">
             <input type="file" class="border p-2 rounded-lg" name="image">

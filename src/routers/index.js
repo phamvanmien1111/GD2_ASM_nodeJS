@@ -13,7 +13,7 @@ function route(app) {
 
     // Sử dụng các router
     app.use('/home', homeRouter); 
-    app.use('/products', productsRouter); 
+    app.use('/post/products', productsRouter); 
     app.use('/profile', profileRouter);
     app.use('/dangnhap', loginRouter);
     app.use('/dangky', logoutRouter);
