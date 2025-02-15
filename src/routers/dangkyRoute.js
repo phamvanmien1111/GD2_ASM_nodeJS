@@ -4,7 +4,7 @@ const DangkyController = require('../app/controllers/dangkyController');
 // Route cho trang đăng nhập
 router.get('/', DangkyController.index); // Sử dụng router.get thay vì router.use
 
-// Route cho trang home
-// router.get('/home', homeController.home); // Thêm route cho trang home
+router.post('/', DangkyController.register);
+
 
 module.exports = router;

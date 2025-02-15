@@ -1,4 +1,3 @@
-const productsRouter = require('./products');
 const homeRouter = require('./homeRouter'); 
 const AboutRouter = require('./about');
 const postRouter = require('./apiRouter');
@@ -13,7 +12,7 @@ function route(app) {
 
     // Sử dụng các router
     app.use('/home', homeRouter); 
-    app.use('/post/products', productsRouter); 
+    // app.use('/post/products', productsRouter); 
     app.use('/profile', profileRouter);
     app.use('/dangnhap', loginRouter);
     app.use('/dangky', logoutRouter);

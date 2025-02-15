@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt');
 
 class LoginController {
     index(req, res) {
-        res.render('dangnhap', { showHeaderFooter: false });
+        res.render('auth/dangnhap', { showHeaderFooter: false });
     }
 
     async login(req, res) {
@@ -14,7 +14,7 @@ class LoginController {
             console.log('User tìm thấy:', user);
 
             if (!user) {
-                return res.render('dangnhap', { error: 'Sai tài khoản hoặc mật khẩu!' });
+                return res.render('auth/dangnhap', { error: 'Sai tài khoản hoặc mật khẩu!' });
             }
 
             // Kiểm tra mật khẩu (nếu đã được mã hóa)
@@ -22,7 +22,7 @@ class LoginController {
             console.log('Mật khẩu đúng:', isMatch);
 
             if (!isMatch) {
-                return res.render('dangnhap', { error: 'Sai tài khoản hoặc mật khẩu!' });
+                return res.render('auth/dangnhap', { error: 'Sai tài khoản hoặc mật khẩu!' });
             }
 
             // Lưu session

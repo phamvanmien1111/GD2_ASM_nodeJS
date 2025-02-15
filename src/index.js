@@ -20,6 +20,7 @@ app.use(session({
     resave: false,
     saveUninitialized: true,
     cookie: { secure: false }
+
 }));
 app.use((req, res, next) => {
     res.locals.user = req.session.user || null;
