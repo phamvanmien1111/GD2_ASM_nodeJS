@@ -1,5 +1,3 @@
-const db = require('../../config/db'); // Kết nối DB
-
 // class User {
 //     // Tìm người dùng theo username
 //     static async findByUsername(username) {
@@ -28,6 +26,7 @@ const db = require('../../config/db'); // Kết nối DB
 // }
 
 // module.exports = User;
+import db from '../../config/db.js';
 class User {
     static async findByUsername(username) {
         try {
@@ -40,10 +39,10 @@ class User {
         }
     }
 
-    static async create(username, passwordHash, email,LastName,FirstName,Gender) {
+    static async create(username, passwordHash, email, LastName, FirstName, Gender) {
         try {
-            const query = `INSERT INTO users (Username, PasswordHash, Email,LastName,FirstName,Gender, CreatedAt) VALUES (?, ?, ?,?,?,?, NOW())`;
-            const [result] = await db.execute(query, [username, passwordHash,email,LastName,FirstName,Gender]);// execute()
+            const query = `INSERT INTO users (Username, PasswordHash, Email, LastName, FirstName, Gender, CreatedAt) VALUES (?, ?, ?, ?, ?, ?, NOW())`;
+            const [result] = await db.execute(query, [username, passwordHash, email, LastName, FirstName, Gender]); // execute()
             return result.insertId;
         } catch (error) {
             console.error('Lỗi khi tạo user:', error);
@@ -52,4 +51,4 @@ class User {
     }
 }
 
-module.exports = User;
+export default User;

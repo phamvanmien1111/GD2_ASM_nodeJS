@@ -1,8 +1,13 @@
-const express = require('express');
-const exphbs = require('express-handlebars');
-const path = require('path');
-const morgan = require('morgan');
-const session = require('express-session');
+import express from 'express';
+import exphbs from 'express-handlebars';
+import path from 'path';
+import morgan from 'morgan';
+import session from 'express-session';
+import { fileURLToPath } from 'url';
+import route from './routers/index.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -20,12 +25,13 @@ app.use(session({
     resave: false,
     saveUninitialized: true,
     cookie: { secure: false }
-
 }));
+
 app.use((req, res, next) => {
     res.locals.user = req.session.user || null;
     next();
 });
+
 // Cấu hình Handlebars
 app.engine('hbs', exphbs.engine({
     defaultLayout: 'main',
@@ -40,10 +46,11 @@ app.set('views', path.join(__dirname, 'resources/views'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Import & sử dụng router (phải đặt **sau** middleware xử lý form)
-const route = require('./routers');
 route(app);
 
 // Khởi động server
 app.listen(port, () => {
     console.log(`App running at http://localhost:${port}`);
 });
+
+export default app;

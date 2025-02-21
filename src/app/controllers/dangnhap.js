@@ -1,5 +1,5 @@
-const User = require('../models/User');
-const bcrypt = require('bcrypt');
+import User from '../models/User.js';
+import bcrypt from 'bcrypt';
 
 class LoginController {
     index(req, res) {
@@ -45,4 +45,4 @@ class LoginController {
     }
 }
 
-module.exports = new LoginController();
+export default new LoginController();

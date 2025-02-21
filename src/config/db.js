@@ -19,7 +19,7 @@
 // });
 
 // module.exports = connection;
-const mysql = require('mysql2/promise'); // Dùng promise để hỗ trợ async/await
+import mysql from 'mysql2/promise'; // Dùng promise để hỗ trợ async/await
 
 // Tạo pool kết nối với .promise()
 const pool = mysql.createPool({
@@ -46,4 +46,4 @@ const db = pool;
   }
 })();
 
-module.exports = db; // Xuất db thay vì pool
+export default db; // Xuất db thay vì pool
