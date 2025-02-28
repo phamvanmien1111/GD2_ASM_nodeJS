@@ -66,7 +66,9 @@ class ProfileController {
             res.status(500).json({ message: 'Lỗi server' });
         }
     }
+    
 }
+
 
 // Xuất class dưới dạng instance để dùng trong router
 export default new ProfileController();

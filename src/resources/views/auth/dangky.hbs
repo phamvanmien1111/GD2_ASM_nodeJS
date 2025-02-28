@@ -1,69 +1,60 @@
-<body class="bg-gray-200 flex justify-center items-center min-h-screen" style="background-image: url('https://i.pinimg.com/736x/b6/5e/4b/b65e4b2ccfa2f8872d86725924add187.jpg'); background-size: cover;">
-
+<body class="bg-gray-200 flex justify-center items-center min-h-screen" 
+    style="background-image: url('https://i.pinimg.com/736x/b6/5e/4b/b65e4b2ccfa2f8872d86725924add187.jpg'); background-size: cover;">
+    
     <div class="p-6 rounded-lg shadow-lg w-full max-w-md bg-white/90">
         <h2 class="text-2xl font-bold text-center">Tạo tài khoản mới</h2>
         <p class="text-gray-600 text-center mb-4">Nhanh chóng và dễ dàng.</p>
 
-        <form action="/dangky" method="POST">
+        {{#if errorMessage}}
+        <script>alert("{{errorMessage}}");</script>
+        {{/if}}
+
+        {{#if successMessage}}
+        <script>alert("{{successMessage}}");</script>
+        {{/if}}
+
+        <form action="/dangky" method="POST" novalidate>
             <div class="mb-3">
                 <label class="block text-gray-700" for="username">Tên đăng nhập</label>
-                <input type="text" id="username" name="username" placeholder="Tên đăng nhập" class="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500" required>
+                <input type="text" id="username" name="username" placeholder="Tên đăng nhập"
+                    class="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500" required>
             </div>
 
             <div class="flex gap-2 mb-3">
                 <div class="w-1/2">
-                    <label class="block text-gray-700" for="FirstName">Họ</label>
-                    <input type="text" id="FirstName" name="FirstName" placeholder="Họ" class="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500" required>
+                    <label class="block text-gray-700" for="firstName">Họ</label>
+                    <input type="text" id="firstName" name="firstName" placeholder="Họ"
+                        class="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500" required>
                 </div>
                 <div class="w-1/2">
-                    <label class="block text-gray-700" for="LastName">Tên</label>
-                    <input type="text" id="LastName" name="LastName" placeholder="Tên" class="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500" required>
+                    <label class="block text-gray-700" for="lastName">Tên</label>
+                    <input type="text" id="lastName" name="lastName" placeholder="Tên"
+                        class="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500" required>
                 </div>
             </div>
 
             <div class="mb-3">
-                <label class="block text-gray-700">Ngày sinh</label>
-                <div class="flex gap-2">
-                    <select id="day" name="day" class="w-1/3 px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500" required>
-                        <option>12</option>
-                    </select>
-                    <select id="month" name="month" class="w-1/3 px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500" required>
-                        <option>Tháng 2</option>
-                    </select>
-                    <select id="year" name="year" class="w-1/3 px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500" required>
-                        <option>2025</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="mb-3">
-                <label class="block text-gray-700">Giới tính</label>
-                <div class="flex gap-2">
-                    <label class="flex items-center w-1/3 border rounded-md px-4 py-2">
-                        <input type="radio" id="gender_female" name="Gender" value="female" class="mr-2"> Nữ
-                    </label>
-                    <label class="flex items-center w-1/3 border rounded-md px-4 py-2">
-                        <input type="radio" id="gender_male" name="Gender" value="male" class="mr-2"> Nam
-                    </label>
-                    <label class="flex items-center w-1/3 border rounded-md px-4 py-2">
-                        <input type="radio" id="gender_other" name="Gender" value="other" class="mr-2"> Tùy chỉnh
-                    </label>
-                </div>
+                <label class="block text-gray-700" for="phone">Số điện thoại</label>
+                <input type="tel" id="phone" name="phone" placeholder="Số điện thoại"
+                    class="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500" required>
             </div>
 
             <div class="mb-3">
                 <label class="block text-gray-700" for="email">Email</label>
-                <input type="email" id="email" name="email" placeholder="Email" class="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500" required>
+                <input type="email" id="email" name="email" placeholder="Email"
+                    class="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500" required>
             </div>
 
             <div class="mb-3">
                 <label class="block text-gray-700" for="password">Mật khẩu</label>
-                <input type="password" id="password" name="password" placeholder="Mật khẩu" class="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500" required>
+                <input type="password" id="password" name="password" placeholder="Mật khẩu"
+                    class="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500" required>
             </div>
 
             <div class="mb-3">
                 <label class="block text-gray-700" for="confirm_password">Xác nhận mật khẩu</label>
-                <input type="password" id="confirm_password" name="confirm_password" placeholder="Xác nhận mật khẩu" class="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500" required>
+                <input type="password" id="confirm_password" name="confirm_password" placeholder="Xác nhận mật khẩu"
+                    class="w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-blue-500" required>
             </div>
 
             <button type="submit" class="w-full bg-green-500 text-white py-2 rounded-md hover:bg-green-600">
@@ -72,7 +63,7 @@
         </form>
 
         <p class="text-center text-blue-500 mt-4 hover:underline cursor-pointer">
-            Bạn đã có tài khoản?
+            <a href="/dangnhap">Bạn đã có tài khoản?</a>
         </p>
     </div>
 

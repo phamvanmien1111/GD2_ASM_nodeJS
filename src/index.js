@@ -11,7 +11,6 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 const port = process.env.PORT || 3000;
-
 // Middleware để ghi log các yêu cầu HTTP
 app.use(morgan('dev'));
 
@@ -37,7 +36,15 @@ app.engine('hbs', exphbs.engine({
     defaultLayout: 'main',
     layoutsDir: path.join(__dirname, 'resources/views/layouts'),
     partialsDir: path.join(__dirname, 'resources/views/partials'),
-    extname: '.hbs'
+    extname: '.hbs',
+    helpers: {
+        eq: function (a, b) {
+            return a === b;
+        },
+        json: function (context) {
+            return JSON.stringify(context);
+        }
+    }
 }));
 app.set('view engine', 'hbs');
 app.set('views', path.join(__dirname, 'resources/views'));

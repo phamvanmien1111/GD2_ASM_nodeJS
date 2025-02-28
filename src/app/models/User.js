@@ -39,10 +39,10 @@ class User {
         }
     }
 
-    static async create(username, passwordHash, email, LastName, FirstName, Gender) {
+    static async create(username, passwordHash, email,phone, LastName, FirstName, Gender) {
         try {
-            const query = `INSERT INTO users (Username, PasswordHash, Email, LastName, FirstName, Gender, CreatedAt) VALUES (?, ?, ?, ?, ?, ?, NOW())`;
-            const [result] = await db.execute(query, [username, passwordHash, email, LastName, FirstName, Gender]); // execute()
+            const query = `INSERT INTO users (Username, PasswordHash, Email,Phone, LastName, FirstName, CreatedAt) VALUES (?, ?, ?, ?, ?,?, NOW())`;
+            const [result] = await db.execute(query, [username, passwordHash, email,parseInt(phone), LastName, FirstName]); // execute()
             return result.insertId;
         } catch (error) {
             console.error('Lỗi khi tạo user:', error);

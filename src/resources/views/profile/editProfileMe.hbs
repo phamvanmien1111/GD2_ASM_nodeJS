@@ -1,17 +1,45 @@
-<h1 class="text-2xl font-bold mb-4">Chỉnh sửa thông tin cá nhân</h1>
- <form action="/profileMe/update?_method=PUT" method="POST" class="bg-white p-4 rounded shadow">
-        <input type="hidden" name="_method" value="PUT">
-    <label class="block">Tên:</label>
-    <input type="text" name="Username" value="{{profile.Username}}" class="border p-2 w-full mb-4" required>
+<h1 class="text-2xl font-bold mb-6 text-center">Chỉnh sửa thông tin cá nhân</h1>
+<form id="profileForm" action="/profileMe/update?_method=PUT"  enctype="multipart/form-data" method="POST" class="bg-white p-6 rounded shadow max-w-lg mx-auto" novalidate>
+<input type="hidden" name="_method" value="PUT">
 
-    <label class="block">Email:</label>
-    <input type="email" name="Email" value="{{profile.Email}}" class="border p-2 w-full mb-4" required>
+<div class="flex flex-col items-center">
+    <label class="block w-full max-w-sm text-left font-medium">Tên:</label>
+    <input type="text" name="Username" id="Username" value="{{profile.Username}}" class="border p-3 w-full max-w-sm mb-4 rounded" required>
 
-    <label class="block">Số điện thoại:</label>
-    <input type="text" name="phone" value="{{profile.phone}}" class="border p-2 w-full mb-4" required>
+    <label class="block w-full max-w-sm text-left font-medium">Email:</label>
+    <input type="email" name="Email" id="Email" value="{{profile.Email}}" class="border p-3 w-full max-w-sm mb-4 rounded" required>
 
-    <label class="block">Địa chỉ:</label>
-    <input type="text" name="Location" value="{{profile.Location}}" class="border p-2 w-full mb-4" required>
+    <label class="block w-full max-w-sm text-left font-medium">Số điện thoại:</label>
+    <input type="text" name="phone" id="phone" value="{{profile.phone}}" class="border p-3 w-full max-w-sm mb-4 rounded" required pattern="[0-9]{10,}" title="Số điện thoại phải có ít nhất 10 chữ số">
 
-    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Lưu</button>
+    <label class="block w-full max-w-sm text-left font-medium">Địa chỉ:</label>
+    <input type="text" name="Location" id="Location" value="{{profile.Location}}" class="border p-3 w-full max-w-sm mb-4 rounded" required>
+
+<label>Ảnh đại diện:</label>
+    <input type="file" name="Avatar">
+    <img src="{{profile.Avatar}}" alt="Avatar" class="w-32 h-32 rounded-full mt-3">
+<label class="block w-full max-w-sm text-left font-medium">Tiểu sử:</label>
+<textarea name="Bio" id="Bio" class="border p-3 w-full max-w-sm mb-4 rounded" required>{{profile.Bio}}</textarea>
+</div>
+
+<div class="text-center mt-4">
+    <button type="submit" class="bg-blue-500 text-white px-6 py-3 rounded text-lg">Lưu</button>
+</div>
+
 </form>
+<script src="/js/profile/profileMe.js">
+document.getElementById("profileForm").addEventListener("submit", function (event) {
+    event.preventDefault(); // Ngăn chặn form gửi ngay lập tức để kiểm tra
+
+    const formData = new FormData(this);
+    for (let [key, value] of formData.entries()) {
+        console.log(`📌 ${key}:`, value);
+    }
+
+    // Gửi form bình thường
+    this.submit();
+});
+
+</script>
+
+

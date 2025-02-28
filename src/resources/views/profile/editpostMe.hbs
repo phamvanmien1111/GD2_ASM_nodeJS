@@ -1,0 +1,28 @@
+<h2 class="text-2xl font-bold text-center text-gray-800 mb-6">Chỉnh sửa bài viết</h2>
+
+<form action="/profile/editPost/{{post.PostID}}" method="POST" enctype="multipart/form-data" class="max-w-lg mx-auto bg-white p-6 rounded-lg shadow-md">
+    <!-- Nội dung bài viết -->
+    <div class="mb-4">
+        <label for="content" class="block text-sm font-medium text-gray-700">Nội dung:</label>
+        <textarea id="content" name="content" class="w-full p-3 border rounded-lg focus:ring focus:ring-blue-300" rows="4">{{post.Content}}</textarea>
+    </div>
+
+    <!-- Ảnh hiện tại -->
+    {{#if post.ImageURL}}
+    <div class="mb-4">
+        <label class="block text-sm font-medium text-gray-700">Ảnh hiện tại:</label>
+        <img src="{{post.ImageURL}}" alt="Ảnh bài viết" class="w-full h-48 object-cover rounded-lg shadow-md">
+    </div>
+    {{/if}}
+
+    <!-- Chọn ảnh mới -->
+    <div class="mb-4">
+        <label for="image" class="block text-sm font-medium text-gray-700">Chọn ảnh mới:</label>
+        <input type="file" id="image" name="image" accept="image/*" class="w-full p-2 border rounded-lg cursor-pointer">
+    </div>
+
+    <!-- Nút cập nhật -->
+    <button type="submit" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-200">
+        Cập nhật
+    </button>
+</form>

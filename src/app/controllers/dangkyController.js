@@ -19,41 +19,58 @@ class DangKyController {
     index(req, res) {
         res.render('auth/dangky', { showHeaderFooter: false });
     }
-
-    // Xử lý đăng ký
     async register(req, res) {
         try {
-            const { username, email, password, confirm_password, LastName, FirstName, Gender } = req.body;
+            const { username, email, phone, password, confirm_password, firstName, lastName } = req.body;
             console.log("Dữ liệu nhận được từ req.body:", req.body);
-
-            // Kiểm tra mật khẩu xác nhận
-            if (password !== confirm_password) {
-                return res.status(400).json({ message: 'Mật khẩu xác nhận không khớp' });
+    
+            // Kiểm tra các trường không được để trống
+            if (!username || !email || !password || !confirm_password || !phone || !firstName || !lastName) {
+                return res.render('auth/dangky', { 
+                    showHeaderFooter: false, 
+                    errorMessage: 'Vui lòng điền đầy đủ thông tin' 
+                });
             }
-
+    
+            // Kiểm tra số điện thoại có đúng định dạng không (10-11 số)
+            if (!/^\d{10,11}$/.test(phone)) {
+                return res.render('auth/dangky', { 
+                    showHeaderFooter: false, 
+                    errorMessage: 'Số điện thoại không hợp lệ, phải có 10-11 chữ số' 
+                });
+            }
+    
             // Kiểm tra username đã tồn tại chưa
             const existingUser = await User.findByUsername(username);
             if (existingUser) {
-                return res.status(400).json({ message: 'Tên đăng nhập đã tồn tại' });
+                return res.render('auth/dangky', { 
+                    showHeaderFooter: false, 
+                    errorMessage: 'Tên đăng nhập đã tồn tại' 
+                });
             }
-
+    
             // Băm mật khẩu
             const saltRounds = 10;
             const passwordHash = await bcrypt.hash(password, saltRounds);
-
-            // Tạo tài khoản mới
-            const userId = await User.create(username, passwordHash, email, LastName, FirstName, Gender);
-
-            // res.status(201).json({ message: 'Đăng ký thành công', userId });
+    
+            // Tạo tài khoản mới (bổ sung FirstName & LastName)
+            await User.create(username, passwordHash, email, parseInt(phone), firstName, lastName);
+    
+            // Chuyển hướng đến trang đăng nhập với thông báo thành công
             res.render('auth/dangnhap', { 
                 showHeaderFooter: false, 
                 successMessage: 'Đăng ký thành công! Vui lòng đăng nhập.' 
             });
+    
         } catch (error) {
-            console.error(error);
-            res.status(500).json({ message: 'Lỗi máy chủ' });
+            console.error("Lỗi trong quá trình đăng ký:", error);
+            return res.render('auth/dangky', { 
+                showHeaderFooter: false, 
+                errorMessage: 'Lỗi máy chủ, vui lòng thử lại sau' 
+            });
         }
     }
+    
 }
 
 export default new DangKyController();

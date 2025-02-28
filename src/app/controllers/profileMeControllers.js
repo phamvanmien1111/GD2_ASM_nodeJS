@@ -19,7 +19,17 @@ class ProfileMeController {
             // 🔍 Lấy danh sách bài viết của user
             const posts = await ProfileMe.getPost(userId);
             console.log("📝 Bài viết của user:", posts);
-    
+            posts.forEach(post => {
+                if (post.CreatedAt) {
+                    const date = new Date(post.CreatedAt); // Chuyển chuỗi ISO thành Date object
+                    post.CreatedAt = date.toLocaleTimeString("vi-VN", { 
+                        hour: "2-digit", 
+                        minute: "2-digit", 
+                        hour12: false // Định dạng 24h
+                    });
+                }
+            });
+            console.log("📝 Bài viết:", posts); // 🟢 Debug xem có dữ liệu không
             res.render('profile/profileMe', { 
                 showHeaderFooter: true, 
                 profile: user, 
@@ -30,20 +40,58 @@ class ProfileMeController {
             res.status(500).send("Lỗi server");
         }
     }
+    // static async editProfileMe(req, res) {
+    //     try {
+    //         if (!req.session.user) {
+    //             return res.redirect('/dangnhap'); // Nếu chưa đăng nhập thì chuyển hướng
+    //         }
+    //         console.log('User:', req.session.user);
+    //         res.render('profile/editProfileMe', { 
+    //             showHeaderFooter: true, 
+    //             profile: req.session.user 
+    //         });
+    //     } catch (error) {
+    //         res.status(500).send('Lỗi server');
+    //     }
+    // }
     static async editProfileMe(req, res) {
         try {
             if (!req.session.user) {
-                return res.redirect('/dangnhap'); // Nếu chưa đăng nhập thì chuyển hướng
+                return res.redirect('/dangnhap');
             }
+            
+            const userId = req.session.user.UserID;
+            const user = await ProfileMe.getProfileMe(userId); 
     
             res.render('profile/editProfileMe', { 
                 showHeaderFooter: true, 
-                profile: req.session.user 
+                profile: user 
             });
         } catch (error) {
+            console.error('❌ Lỗi khi mở trang chỉnh sửa:', error);
             res.status(500).send('Lỗi server');
         }
     }
+    static async editPostMe(req, res) {
+        try {
+            if (!req.session.user) {
+                return res.redirect('/dangnhap');
+            }
+            
+            const userId = req.session.user.UserID;
+            const user = await ProfileMe.getPost(userId); 
+    
+           res.render('profile/editpostMe', { 
+    showHeaderFooter: true, 
+    profile: user 
+});
+        } catch (error) {
+            console.error('❌ Lỗi khi mở trang chỉnh sửa:', error);
+            res.status(500).send('Lỗi server');
+        }
+    }
+    
+    
     // Lấy thông tin cá nhân của user đang đăng nhập
     static async getProfileMe(req, res) {
         console.log("🟢 Đang chạy getProfileMe()..."); 
@@ -59,11 +107,9 @@ class ProfileMeController {
             // Lấy bài viết của user
             const posts = await ProfileMe.getPost(userId);
             console.log("📌 Bài viết của user:", posts); // 🟢 In ra để kiểm tra
-    
             if (!posts || posts.length === 0) {
                 console.log("⚠️ Không có bài viết nào được tìm thấy!");
             }
-    
             return res.render('profile/profileMe', { user, posts, showHeaderFooter: true });
         } catch (error) {
             console.error('Lỗi khi lấy thông tin hồ sơ:', error);
@@ -77,29 +123,63 @@ class ProfileMeController {
     // Cập nhật thông tin cá nhân
     static async updateProfileMe(req, res) {
         try {
-            const userId = req.session.user?.UserID; // Lấy ID từ session
+            const userId = req.session.user?.UserID;
             if (!userId) {
                 return res.status(401).json({ success: false, message: "Bạn chưa đăng nhập!" });
             }
     
-            const { Username, Email, phone, Location } = req.body;
-            if (!Username || !Email || !phone || !Location) {
-                return res.status(400).json({ success: false, message: "Vui lòng điền đầy đủ thông tin!" });
+            console.log("🟢 Dữ liệu nhận được:", req.body);
+            console.log("📌 File nhận được:", req.file);
+    
+            // Kiểm tra xem dữ liệu có bị rỗng không
+            if (Object.keys(req.body).length === 0 && !req.file) {
+                return res.status(400).json({ success: false, message: "Không có dữ liệu gửi lên!" });
             }
     
-            const updated = await ProfileMe.updateProfile(userId, { Username, Email, phone, Location });
+            let { Username, Email, phone, Location, Bio } = req.body;
+            let Avatar = req.session.user.Avatar || null;
     
+            // Nếu có file upload, cập nhật Avatar
+            if (req.file) {
+                Avatar = '/images/' + req.file.filename;
+                console.log("📌 Ảnh mới được cập nhật:", Avatar);
+            }
+    
+            // Tránh trường hợp undefined gây lỗi SQL
+            const updatedData = {
+                Username: Username ?? null,
+                Email: Email ?? null,
+                phone: phone ?? null,
+                Location: Location ?? null,
+                Avatar: Avatar ?? null,
+                Bio: Bio ?? null
+            };
+    
+            console.log("📌 Dữ liệu cập nhật:", updatedData);
+    
+            // Gửi dữ liệu vào model để cập nhật
+            const updated = await ProfileMe.updateProfile(userId, updatedData);
+    
+            // Kiểm tra kết quả cập nhật    
             if (updated) {
-                req.session.user = { ...req.session.user, Username, Email, phone, Location };
+                req.session.user = { ...req.session.user, ...updatedData };
+                console.log("✅ Cập nhật thành công!");
+    
                 return res.redirect('/profileMe'); 
             } else {
+                console.error("❌ Lỗi: Không thể cập nhật!");
                 return res.status(400).json({ success: false, message: "Không thể cập nhật!" });
             }
+    
         } catch (error) {
-            console.error("Lỗi cập nhật profile:", error);
+            console.error("❌ Lỗi cập nhật profile:", error);
             res.status(500).json({ success: false, message: "Lỗi server!" });
         }
-    } 
+    }
+    
+    
+    
+    
       async getProfile(req, res) {
         const userId = req.params.id;
     
@@ -110,8 +190,7 @@ class ProfileMeController {
     
             // Lấy bài viết của user
             const posts = await Profile.getPost(userId);
-    
-            console.log('User:', user);
+
             console.log('Posts:', posts.Avatar);
             return res.render('profile/profile', { user, posts, showHeaderFooter: true });
 
@@ -119,7 +198,62 @@ class ProfileMeController {
             console.error(error);
             res.status(500).json({ message: 'Server error' });
         }
-    }   
+    } 
+    static async showEditPost(req, res) {
+        try {
+            if (!req.session.user) {
+                return res.redirect('/dangnhap');
+            }
+
+            const postId = req.params.id;
+            const userId = req.session.user.UserID;
+
+            const post = await ProfileMe.getPostById(userId, postId);
+
+            if (!post) {
+                return res.status(404).send('Bài viết không tồn tại hoặc không có quyền chỉnh sửa.');
+            }
+
+            res.render('profile/editPost', { showHeaderFooter: true, post });
+        } catch (error) {
+            console.error('❌ Lỗi khi mở trang chỉnh sửa:', error);
+            res.status(500).send('Lỗi server');
+        }
+    }
+
+    // Xử lý cập nhật bài viết
+    static async updatePost(req, res) {
+        try {
+            if (!req.session.user) {
+                return res.redirect('/dangnhap');
+            }
+
+            const postId = req.params.id;
+            const userId = req.session.user.UserID;
+            const { content } = req.body;
+            let imageUrl = req.file ? `/uploads/${req.file.filename}` : null;
+
+            // Lấy bài viết cũ
+            const post = await ProfileMe.getPostById(userId, postId);
+
+            if (!post) {
+                return res.status(404).send('Bài viết không tồn tại hoặc không có quyền chỉnh sửa.');
+            }
+
+            // Nếu không có ảnh mới, giữ nguyên ảnh cũ
+            if (!imageUrl) {
+                imageUrl = post.ImageURL;
+            }
+
+            // Cập nhật bài viết
+            await ProfileMe.updatePost(userId, postId, content, imageUrl);
+
+            res.redirect('/profile');
+        } catch (error) {
+            console.error('❌ Lỗi khi cập nhật bài viết:', error);
+            res.status(500).send('Lỗi server');
+        }
+    }  
 }
 
 export default  ProfileMeController;
